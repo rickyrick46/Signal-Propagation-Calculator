@@ -7,7 +7,7 @@
 using namespace std;
 
 //PROTOTYPES
-bool inputNoNumber(string str, int size);
+bool isNoNumber(string str, int size);
 
 
 void changeStation() {
@@ -23,7 +23,7 @@ void changeStation() {
 		cout << "Enter Latitude: ";
 		getline(cin, lat);
 
-		if (inputNoNumber(lat, lat.size()) == false) {
+		if (isNoNumber(lat, lat.size()) == true) {
 			break;
 		}
 		else {
@@ -37,7 +37,7 @@ void changeStation() {
 		cout << "Enter Longitude: ";
 		getline(cin, longi);
 
-		if (inputNoNumber(longi, longi.size()) == false) {
+		if (isNoNumber(longi, longi.size()) == true) {
 			break;
 		}
 		else {
@@ -50,7 +50,7 @@ void changeStation() {
 		cout << "Enter Altitude: ";
 		getline(cin, alt);
 
-		if (inputNoNumber(alt, alt.size()) == false) {
+		if (isNoNumber(alt, alt.size()) == true) {
 			break;
 		}
 		else {
@@ -75,13 +75,13 @@ void changeStation() {
 
 
 
-bool inputNoNumber(string str, int size ) {
+bool isNoNumber(string str, int size ) {
 
 	for (int i = 0; i < size; i++) {
 		if (isalpha(str[i]))
-			return true;
+			return false;
 	}
 
-	return false;
+	return true;
 
 }
