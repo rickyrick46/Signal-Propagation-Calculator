@@ -4,10 +4,54 @@
 #include <iomanip>
 #include <fstream>
 #include <string>
+#include <sstream>
 using namespace std;
 
-//PROTOTYPES
-bool isNoNumber(string str, int size);
+//Prototypes
+void mainMenu();
+void changeStation();
+void viewStation();
+bool isNoAlpha(string str, int size);
+
+
+void viewStation() {
+	string latLongiAlt;
+	
+
+	ifstream file("ground_station.csv");
+
+	if (!file.is_open())
+		cout << "ERROR - FILE NOT FOUND";
+	
+	getline(file, latLongiAlt);
+
+	getline(file, latLongiAlt, ',');
+		cout << "Latitude: " << latLongiAlt << endl;
+		
+	getline(file, latLongiAlt, ',');
+		cout << "Longitude: " << latLongiAlt << endl;
+
+	getline(file, latLongiAlt);
+		cout << "Altitude: " << latLongiAlt << endl;
+
+		
+
+	file.close();
+
+	mainMenu();
+
+}
+
+
+bool isNoAlpha(string str, int size) {
+
+	for (int i = 0; i < size; i++) {
+		if (isalpha(str[i]))
+			return false;
+	}
+
+	return true;
+}
 
 
 void changeStation() {
@@ -23,7 +67,7 @@ void changeStation() {
 		cout << "Enter Latitude: ";
 		getline(cin, lat);
 
-		if (isNoNumber(lat, lat.size()) == true) {
+		if (isNoAlpha(lat, lat.size()) == true) {
 			break;
 		}
 		else {
@@ -37,7 +81,7 @@ void changeStation() {
 		cout << "Enter Longitude: ";
 		getline(cin, longi);
 
-		if (isNoNumber(longi, longi.size()) == true) {
+		if (isNoAlpha(longi, longi.size()) == true) {
 			break;
 		}
 		else {
@@ -50,7 +94,7 @@ void changeStation() {
 		cout << "Enter Altitude: ";
 		getline(cin, alt);
 
-		if (isNoNumber(alt, alt.size()) == true) {
+		if (isNoAlpha(alt, alt.size()) == true) {			
 			break;
 		}
 		else {
@@ -60,28 +104,42 @@ void changeStation() {
 	}
 
 		file << "latitude,longitude,altitude\n" <<
-		 lat << longi << alt;
+		 lat << ',' << longi << ',' << alt;
 									 
 	
 
 		file.close();
 
-		cout << "Ground Station Changed!\n"
-			 << "Latitude: " << lat << endl
-			 << "Longitude: " << longi << endl
-			 << "Altitude: " << alt;
-
+		cout << "Ground Station Changed!\n"				
+			<< "Latitude: " << lat << endl
+			<< "Longitude: " << longi << endl
+			<< "Altitude: " << alt;
+			
+		
+		mainMenu();
+		
+			
 }
 
 
+void mainMenu() {
+	cout << endl << endl << setw(15) << setfill('*') << "*\n\n";
 
-bool isNoNumber(string str, int size ) {
+	int selector = 0;       
 
-	for (int i = 0; i < size; i++) {
-		if (isalpha(str[i]))
-			return false;
-	}
+	cout << "1: Change Ground Station Position\n"
+		<< "2: View Ground Station Position\n"
+		<< "Enter: ";
 
-	return true;
+	cin >> selector;
+	cin.ignore();
 
+	if (selector == 1)
+		changeStation();
+
+	if (selector == 2)
+		viewStation();
+		
 }
+
+
