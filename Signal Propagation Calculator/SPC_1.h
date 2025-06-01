@@ -5,13 +5,58 @@
 #include <fstream>
 #include <string>
 #include <sstream>
+#include <conio.h>
 using namespace std;
 
 //Prototypes
 void mainMenu();
 void changeStation();
 void viewStation();
-bool isNoAlpha(string str, int size);
+bool isNoAlpha(const string& str, int size);
+void azimuthTx(short initialAzimuth = 0);
+
+
+void azimuthTx(short initialAzimuth) {
+	short azimuth = initialAzimuth;
+
+	cout << "Antenna Azimuth (Use UP and DOWN arrow keys): \n";		
+
+	while (true) {
+
+		if (_kbhit()) {
+			int ch = _getch();
+			if (ch == 0 || ch == 224) {
+				int arrow = _getch();
+				if (arrow == 72) {
+					azimuth += 5;
+				}
+				else if (arrow == 80) {
+					azimuth -= 5;
+				}
+
+				if (azimuth >= 360)
+					azimuth -= 360;
+
+				if (azimuth < 0)
+					azimuth += 360;
+
+				cout << "\rAzimuth: " << azimuth << "   " << flush;
+			}
+
+		else if (ch == '\r')
+				break;
+
+		}
+
+		
+
+
+	}
+
+}
+
+
+
 
 
 void viewStation() {
@@ -43,7 +88,7 @@ void viewStation() {
 }
 
 
-bool isNoAlpha(string str, int size) {
+bool isNoAlpha(const string& str, int size) {
 
 	for (int i = 0; i < size; i++) {
 		if (isalpha(str[i]))
@@ -129,6 +174,7 @@ void mainMenu() {
 
 	cout << "1: Change Ground Station Position\n"
 		<< "2: View Ground Station Position\n"
+		<< "3: Azimuth / Tx Controller\n"
 		<< "Enter: ";
 
 	cin >> selector;
@@ -139,6 +185,9 @@ void mainMenu() {
 
 	if (selector == 2)
 		viewStation();
+
+	if (selector == 3)
+		azimuthTx();
 		
 }
 
