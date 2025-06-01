@@ -13,13 +13,44 @@ void mainMenu();
 void changeStation();
 void viewStation();
 bool isNoAlpha(const string& str, int size);
-void azimuthTx(short initialAzimuth = 0);
+void azimuth(short initialAzimuth = 0);
+void establishLink(bool initialTxPwr = 0);
 
 
-void azimuthTx(short initialAzimuth) {
+
+void establishLink(bool initialTxPwr) {
+	bool txPwr = initialTxPwr;
+	
+	cout << "Press 1 to turn on Tx Power\n";
+	
+	cout << "Tx Power: " << boolalpha << txPwr;		//maybe use a terneary operator to make this say "ON" or "OFF"
+
+	while (true) {
+		if (_kbhit()) {
+			int ch = _getch();
+			
+			if (ch == '1')
+				txPwr = true;
+
+			else if (ch == '0')
+				txPwr = false;
+
+			else if (ch == '\r')
+				break;
+
+			cout << "\rTx Power: " << boolalpha << txPwr << " " << flush;
+		}
+
+
+	}
+
+}
+
+
+void azimuth(short initialAzimuth) {
 	short azimuth = initialAzimuth;
 
-	cout << "Antenna Azimuth (Use UP and DOWN arrow keys): \n";		
+	cout << "Antenna Azimuth (Use UP and DOWN arrow keys): " << setw(3) << azimuth << flush;	//need to adjust "*"	
 
 	while (true) {
 
@@ -40,7 +71,7 @@ void azimuthTx(short initialAzimuth) {
 				if (azimuth < 0)
 					azimuth += 360;
 
-				cout << "\rAzimuth: " << azimuth << "   " << flush;
+				cout << "\rAntenna Azimuth (Use UP and DOWN arrow keys): " << setw(3) << azimuth << flush;
 			}
 
 		else if (ch == '\r')
@@ -174,7 +205,8 @@ void mainMenu() {
 
 	cout << "1: Change Ground Station Position\n"
 		<< "2: View Ground Station Position\n"
-		<< "3: Azimuth / Tx Controller\n"
+		<< "3: Azimuth Controller\n"
+		<< "4: Establish Link\n"
 		<< "Enter: ";
 
 	cin >> selector;
@@ -183,12 +215,16 @@ void mainMenu() {
 	if (selector == 1)
 		changeStation();
 
-	if (selector == 2)
+	else if (selector == 2)
 		viewStation();
 
-	if (selector == 3)
-		azimuthTx();
-		
+	else if (selector == 3)
+		azimuth();
+
+	else if (selector == 4)
+		establishLink();
+
+
 }
 
 
