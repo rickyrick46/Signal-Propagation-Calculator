@@ -15,7 +15,22 @@ void viewStation();
 bool isNoAlpha(const string& str, int size);
 void azimuth(short initialAzimuth = 0);
 void establishLink(bool initialTxPwr = 0);
+void centerText(const string& text, int width);
 
+
+
+void centerText(const string& text, int width) {
+	cout << "\n";
+	int pad = (width - text.size()) / 2;
+		
+		if (pad < 0)
+			pad = 0;
+
+		cout << string(pad, ' ') << text << endl;
+
+
+
+}
 
 
 void establishLink(bool initialTxPwr) {
@@ -42,6 +57,21 @@ void establishLink(bool initialTxPwr) {
 		}
 
 
+	}
+
+
+
+	if (txPwr == true)
+		cout << "\nPress '/' To Send Command Link\n"; 
+	
+	while (true) {
+		
+		if (_kbhit()) {
+			int ch = _getch();
+			if (ch == '/')
+				cout << "this where im gonna have the CL function";
+
+			}
 	}
 
 }
@@ -79,10 +109,9 @@ void azimuth(short initialAzimuth) {
 
 		}
 
-		
-
-
 	}
+
+	mainMenu();
 
 }
 
@@ -131,6 +160,11 @@ bool isNoAlpha(const string& str, int size) {
 
 
 void changeStation() {
+	
+	
+	cout << "\n";
+	
+	
 	string lat;
 	string longi;
 	string alt;
@@ -199,14 +233,16 @@ void changeStation() {
 
 
 void mainMenu() {
-	cout << endl << endl << setw(15) << setfill('*') << "*\n\n";
+	
+	centerText("Main Menu", 18);
+	cout << setw(18) << setfill('*') << "*\n";
 
 	int selector = 0;       
 
 	cout << "1: Change Ground Station Position\n"
 		<< "2: View Ground Station Position\n"
 		<< "3: Azimuth Controller\n"
-		<< "4: Establish Link\n"
+		<< "4: Establish Link\n\n"
 		<< "Enter: ";
 
 	cin >> selector;
