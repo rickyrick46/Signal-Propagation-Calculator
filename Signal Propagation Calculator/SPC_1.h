@@ -6,20 +6,46 @@
 #include <string>
 #include <sstream>
 #include <conio.h>
+#include <vector>
 using namespace std;
+
+short az = 0;
 
 //Prototypes
 void mainMenu();
 void changeStation();
 void viewStation();
-bool isNoAlpha(const string& str, int size);
-void azimuth(short initialAzimuth = 0);
-void establishLink(bool initialTxPwr = 0);
+bool isNoAlpha(const string& str, size_t size);
+short azimuth(short initialAzimuth = 0);
+void establishLink(short az, bool initialTxPwr = 0);
 void centerText(const string& text, int width);
 
 
 
+
+
+
+
+struct Aircraft {
+	string acftName = "";
+	short azimuth = 0;
+
+
+
+};
+
+
+extern Aircraft rq4;
+extern Aircraft mq9;
+
+
+
+
+
 void centerText(const string& text, int width) {
+	
+	
+
 	cout << "\n";
 	int pad = (width - text.size()) / 2;
 		
@@ -28,12 +54,14 @@ void centerText(const string& text, int width) {
 
 		cout << string(pad, ' ') << text << endl;
 
+		
+
 
 
 }
 
 
-void establishLink(bool initialTxPwr) {
+void establishLink(short az, bool initialTxPwr) {
 	bool txPwr = initialTxPwr;
 	
 	cout << "Press 1 to turn on Tx Power\n";
@@ -69,7 +97,10 @@ void establishLink(bool initialTxPwr) {
 		if (_kbhit()) {
 			int ch = _getch();
 			if (ch == '/')
-				cout << "this where im gonna have the CL function";
+				if (az == rq4.azimuth || az == mq9.azimuth) {
+					centerText("LINK AQUIRED", 55);
+
+				}
 
 			}
 	}
@@ -77,7 +108,7 @@ void establishLink(bool initialTxPwr) {
 }
 
 
-void azimuth(short initialAzimuth) {
+short azimuth(short initialAzimuth) {
 	short azimuth = initialAzimuth;
 
 	cout << "Antenna Azimuth (Use UP and DOWN arrow keys): " << setw(3) << azimuth << flush;	//need to adjust "*"	
@@ -111,7 +142,11 @@ void azimuth(short initialAzimuth) {
 
 	}
 
-	mainMenu();
+	cout << "\n";
+	centerText("AZIMUTH CHANGED", 55);
+	return azimuth;
+
+	
 
 }
 
@@ -148,7 +183,7 @@ void viewStation() {
 }
 
 
-bool isNoAlpha(const string& str, int size) {
+bool isNoAlpha(const string& str, size_t size) {
 
 	for (int i = 0; i < size; i++) {
 		if (isalpha(str[i]))
@@ -220,10 +255,7 @@ void changeStation() {
 
 		file.close();
 
-		cout << "Ground Station Changed!\n"				
-			<< "Latitude: " << lat << endl
-			<< "Longitude: " << longi << endl
-			<< "Altitude: " << alt;
+		centerText("GROUND STATION CHANGED", 55);
 			
 		
 		mainMenu();
@@ -234,12 +266,12 @@ void changeStation() {
 
 void mainMenu() {
 	
-	centerText("Main Menu", 18);
-	cout << setw(18) << setfill('*') << "*\n";
+	centerText("Main Menu", 55);
+
 
 	int selector = 0;       
-
-	cout << "1: Change Ground Station Position\n"
+	
+	cout << "\n1: Change Ground Station Position\n"
 		<< "2: View Ground Station Position\n"
 		<< "3: Azimuth Controller\n"
 		<< "4: Establish Link\n\n"
@@ -254,11 +286,13 @@ void mainMenu() {
 	else if (selector == 2)
 		viewStation();
 
-	else if (selector == 3)
-		azimuth();
+	else if (selector == 3) {
+		az = azimuth();
+		mainMenu();
+	}
 
 	else if (selector == 4)
-		establishLink();
+		establishLink(az, 0);
 
 
 }
