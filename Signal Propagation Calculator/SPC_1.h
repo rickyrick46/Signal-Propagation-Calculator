@@ -7,6 +7,7 @@
 #include <sstream>
 #include <conio.h>
 #include <vector>
+#include <cmath>
 using namespace std;
 
 short az = 0;
@@ -19,6 +20,7 @@ bool isNoAlpha(const string& str, size_t size);
 short azimuth(short initialAzimuth = 0);
 void establishLink(short az, bool initialTxPwr = 0);
 void centerText(const string& text, int width);
+void signalProp(int& altitude, short& az);
 
 
 
@@ -29,6 +31,7 @@ void centerText(const string& text, int width);
 struct Aircraft {
 	string acftName = "";
 	short azimuth = 0;
+	int altitude = 0;
 
 
 
@@ -38,6 +41,28 @@ struct Aircraft {
 extern Aircraft rq4;
 extern Aircraft mq9;
 
+
+
+
+void signalProp(int& altitude, short& az) {
+
+	//delay = distance / speed of light
+	const double pi = 3.14;
+    const int c = 983571056;
+	double radians = az * pi / 180.0;
+	double distance = altitude / sin(radians);
+	
+
+	
+
+	
+
+	double delay = distance / c;
+
+	centerText("ECHO TEST (seconds):", 55);
+	centerText(to_string(delay), 55);
+
+}
 
 
 
@@ -97,13 +122,29 @@ void establishLink(short az, bool initialTxPwr) {
 		if (_kbhit()) {
 			int ch = _getch();
 			if (ch == '/')
-				if (az == rq4.azimuth || az == mq9.azimuth) {
+				if (az == rq4.azimuth) {
 					centerText("LINK AQUIRED", 55);
+					centerText("Aircraft: ", 55); centerText(rq4.acftName, 55); centerText("Altitude (ft): ", 55); centerText(to_string(rq4.altitude), 55);
+					signalProp(rq4.altitude, rq4.azimuth);
+					break;
+				}
+				else if (az == mq9.azimuth) {
+					centerText("LINK AQUIRED", 55);
+					centerText("Aircraft: ", 55); centerText(mq9.acftName, 55); centerText("Altitude (ft): ", 55); centerText(to_string(mq9.altitude), 55);
+					signalProp(mq9.altitude, mq9.azimuth);
+					break;
 
 				}
-
+				
+				else {
+					centerText("NO RETURN LINK", 55);
+					mainMenu();
+				}
+					
 			}
 	}
+
+	mainMenu();
 
 }
 

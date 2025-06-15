@@ -3,8 +3,8 @@
 
 #include "SPC_1.h"
 
-Aircraft rq4 = { "RQ-4", 25 };
-Aircraft mq9 = { "MQ-9A", 65 };
+Aircraft rq4 = { "RQ-4", 25, 58671 };
+Aircraft mq9 = { "MQ-9A", 65, 34224 };
 
 
 int main() {
